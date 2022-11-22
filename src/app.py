@@ -109,8 +109,8 @@ def get_user(user_id):
 @auth_required
 def create_user():
     """Create SCIM User"""
-    active = request.json.get("Active")
-    displayName = request.json.get("DisplayName")
+    active = request.json.get("active")
+    displayName = request.json.get("displayName")
     emails = request.json.get("emails")
     externalId = request.json.get("externalId")
     groups = request.json.get("groups")
@@ -140,7 +140,7 @@ def create_user():
             user = User(
                 active=active,
                 displayName=displayName,
-                emails_primary=emails[0]["Primary"],
+                emails_primary=emails[0]["primary"],
                 emails_value=emails[0]["value"],
                 emails_type=emails[0]["type"],
                 externalId=externalId,
@@ -160,7 +160,7 @@ def create_user():
                     if existing_group:
                         existing_group.users.append(user)
                     else:
-                        new_group = Group(displayName=group["DisplayName"])
+                        new_group = Group(displayName=group["displayName"])
                         db.session.add(new_group)
                         new_group.users.append(user)
 
@@ -189,8 +189,8 @@ def update_user(user_id):
         )
     else:
         groups = request.json.get("groups")
-        user.active = request.json.get("Active")
-        user.displayName = request.json.get("DisplayName")
+        user.active = request.json.get("active")
+        user.displayName = request.json.get("displayName")
         user.emails = request.json.get("emails")
         user.externalId = request.json.get("externalId")
         user.locale = request.json.get("locale")
@@ -210,7 +210,7 @@ def update_user(user_id):
 @auth_required
 def deactivate_user(user_id):
     """Deactivate SCIM User"""
-    is_user_active = request.json["Operations"][0]["value"]["Active"]
+    is_user_active = request.json["Operations"][0]["value"]["active"]
     user = User.query.get(user_id)
     user.active = is_user_active
 
@@ -250,7 +250,7 @@ def get_group(group_id):
 @auth_required
 def create_group():
     """Create SCIM Group"""
-    displayName = request.json["DisplayName"]
+    displayName = request.json["displayName"]
     members = request.json["members"]
 
     try:
