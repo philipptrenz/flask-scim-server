@@ -1,28 +1,22 @@
 # Flask SCIM Server (Configured for use with Okta)
-**NOTE:** This is not meant to be a fully-fledged, IDP-agnostic SCIM server. This server was designed specifically to integrate with Okta.
+**NOTE:** This is not meant to be a fully-fledged, IDP-agnostic SCIM server. 
 
 ## Dependencies:
-- [virtualenv](https://docs.python.org/3/library/venv.html)
-- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 - [ngrok](https://ngrok.com/)
 
 ## Setting up the Flask app and Postgres DB
-1.  Clone the repo, open terminal and ```cd``` into the project root.
-2.  Create a new virtualenv in the root folder with ```virtualenv env```
-3.  Run the virtual environment with ```source env/bin/activate```
-4.  Install necessary Python packages with ```pip install -r requirements.txt```
-5.  Create a new Postgres database ```scim``` at ```postgresql://localhost/scim```. Enter the psql shell by opening a new terminal tab and typing ```psql postgres```. Create the DB with ```CREATE DATABASE scim;``` (Run ```\l``` to double check the database has been created)
-6.  Go back to the terminal tab that is in the flask app root. Run the following commands to create migrations and tables in the ```scim``` database:
-    - ```python manage.py db init```
-    - ```python manage.py db migrate```
-    - ```python manage.py db upgrade```
-    
-> Feel free to hop back to your postgres tab and run ```\c scim``` to navigate into the scim db, then ```\dt``` to see your new tables: ```groups```, ```users```, ```link```. (Link is a table facilitating the many-to-many relationship between users and groups)
+1.  Build and start docker containers with ```docker-compose up```
+2.  Run the following commands to create migrations and tables in the ```scim``` database:
+    - ```docker-compose exec server python manage.py db init```
+    - ```docker-compose exec server python manage.py db migrate```
+    - ```docker-compose exec server python manage.py db upgrade```
 
-7. Everything should be setup now to run the server locally. Finally run ```python app.py``` to do so. You should now have your SCIM server running on http://localhost:5000.
+7. Everything should be setup now and you should now have your SCIM server running on http://127.0.0.1:5000.
 
 ## Setting up ngrok to route requests from Okta to localhost
-- Once you have ngrok installed, run ```./ngrok http 5000``` to create a tunnel from ngrok to your http://localhost:5000. Copy the ```https``` Forwarding URL created by ngrok as you will need it later.
+- Once you have ngrok installed, run ```./ngrok http 5000``` to create a tunnel from ngrok to your http://127.0.0.1:5000. Copy the ```https``` Forwarding URL created by ngrok as you will need it later.
 
 ## Creating and configuring your Okta Application
 - Now it's time to create a new SCIM integration in Okta. If your SCIM app(s) are already setup on the Okta side, feel free to skip ahead to **Test the SCIM Server**. There are two options that will work with this server, and I will ALWAYS recommend the first, which is using an Okta SCIM template application.
