@@ -10,7 +10,7 @@ DBUSER = os.environ.get('DBUSER')
 DBPASSWORD = os.environ.get('DBPASSWORD')
 DBHOST = os.environ.get('DBHOST')
 DBNAME = os.environ.get('DBNAME')
-API_BEARER = os.environ.get('API_BEARER')
+API_BEARER = os.environ.get('API_BEARER', '')
 
 
 
@@ -35,7 +35,7 @@ def auth_required(func):
 
     @wraps(func)
     def check_auth(*args, **kwargs):
-        if request.headers["Authorization"].split("Bearer ")[1] == "123456789":
+        if request.headers["Authorization"].split("Bearer ")[1] == API_BEARER:
             return func(*args, **kwargs)
         else:
             return make_response(jsonify({"error": "Unauthorized"}), 403)
