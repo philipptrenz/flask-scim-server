@@ -23,6 +23,7 @@ services:
       - DBUSER=scim
       - DBPASSWORD=123456
       - DBHOST=db
+      - API_BEARER=12345678
     ports:
       - "127.0.0.1:5000:5000"
     command: python3 app.py

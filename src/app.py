@@ -6,6 +6,14 @@ from database import db
 from models import User, Group
 
 
+DBUSER = os.environ.get('DBUSER')
+DBPASSWORD = os.environ.get('DBPASSWORD')
+DBHOST = os.environ.get('DBHOST')
+DBNAME = os.environ.get('DBNAME')
+API_BEARER = os.environ.get('API_BEARER')
+
+
+
 def create_app():
     """
     Instantiate Flask
@@ -13,7 +21,7 @@ def create_app():
     Implemented as a factory method to avoid a circular import error.
     """
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{ os.environ.get('DBUSER') }:{ os.environ.get('DBPASSWORD') }@{ os.environ.get('DBHOST') }/{ os.environ.get('DBNAME') }"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{ DBUSER }:{ DBPASSWORD }@{ DBHOST }/{ DBNAME }"
     # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
     return app
