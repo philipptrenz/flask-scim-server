@@ -3,3 +3,4 @@ env/
 ngrok
 migrations/
 data/
+__pycache__/

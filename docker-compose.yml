@@ -1,0 +1,41 @@
+version: '2.0'
+services:
+  db:
+    image: postgres:12
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=scim
+      - POSTGRES_USER=scim
+      - POSTGRES_PASSWORD=123456
+    #ports:
+    #  - "5432:5432"
+
+  server:
+    build:
+      context: ./
+    restart: unless-stopped
+    volumes:
+      - ./src/:/home/
+    environment:
+      - DBNAME=scim
+      - DBUSER=scim
+      - DBPASSWORD=123456
+      - DBHOST=db
+    ports:
+      - "127.0.0.1:5000:5000"
+    command: python3 app.py
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    volumes:
+      - ./data/pgadmin/servers.json:/pgadmin4/servers.json
+      - ./data/pgadmin/data:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadminpass
+      - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+    ports:
+      - "127.0.0.1:7000:80"

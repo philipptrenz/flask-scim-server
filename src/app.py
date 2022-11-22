@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, abort, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
@@ -12,8 +13,7 @@ def create_app():
     Implemented as a factory method to avoid a circular import error.
     """
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/scim"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{ os.environ.get('DBUSER') }:{ os.environ.get('DBPASSWORD') }@{ os.environ.get('DBHOST') }/{ os.environ.get('DBNAME') }"
     db.init_app(app)
     return app
 
@@ -296,4 +296,4 @@ def delete_group(group_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
