@@ -1,6 +1,7 @@
 .DS_Store
+__pycache__/
 env/
+.env
 ngrok
 migrations/
 data/
-__pycache__/

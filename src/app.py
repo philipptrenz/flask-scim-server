@@ -5,11 +5,11 @@ from functools import wraps
 from database import db
 from models import User, Group
 
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
+POSTGRES_DB = os.environ.get('POSTGRES_DB')
+POSTGRES_USER = os.environ.get('POSTGRES_USER')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 
-DBUSER = os.environ.get('DBUSER')
-DBPASSWORD = os.environ.get('DBPASSWORD')
-DBHOST = os.environ.get('DBHOST')
-DBNAME = os.environ.get('DBNAME')
 API_BEARER = os.environ.get('API_BEARER', '')
 
 
@@ -21,7 +21,7 @@ def create_app():
     Implemented as a factory method to avoid a circular import error.
     """
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{ DBUSER }:{ DBPASSWORD }@{ DBHOST }/{ DBNAME }"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{ POSTGRES_USER }:{ POSTGRES_PASSWORD }@{ POSTGRES_HOST }/{ POSTGRES_DB }"
     # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
     return app
