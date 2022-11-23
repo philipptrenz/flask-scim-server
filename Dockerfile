@@ -13,3 +13,5 @@ COPY ./src /home
 WORKDIR /home/
 
 EXPOSE 5000
+
+CMD [ "uwsgi", "--http", "0.0.0.0:5000", "--master", "-p", "2", "-w", "app:app" ]
