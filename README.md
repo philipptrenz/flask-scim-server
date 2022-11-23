@@ -11,6 +11,8 @@ This code example allows you to sync user accounts and groups from a SCIM-enable
 First, create an ```.env``` file, including the necessary environment variables:
 
 ```env
+DEBUG=true
+
 POSTGRES_HOST=db
 POSTGRES_DB=scim
 POSTGRES_USER=scim

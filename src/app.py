@@ -5,6 +5,10 @@ from functools import wraps
 from database import db
 from models import User, Group
 
+
+
+DEBUG = os.environ.get('DEBUG', '').lower() == 'true'
+
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
@@ -305,4 +309,4 @@ def delete_group(group_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=DEBUG, host='0.0.0.0')
